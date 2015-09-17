@@ -1,0 +1,34 @@
+{
+  "project": "IRR.RU",
+  "scrapy": {
+    "concurrent_spiders": 10
+  },
+  "download_timeout": 15,
+  "config": {
+    "allowed_domains": [
+      "irr.ru"
+    ],
+    "start_urls": [
+      "http://irr.ru/real-estate/commercial/search/currency=RUR/sourcefrom=0/date_create=hxs.select(\"//td[text()='%s']/following-sibling::td/text()\" % \"Рег. номер:\".decode('utf-8'))yesterday/page_len60/",
+      "http://irr.ru/real-estate/commercial/search/currency=RUR/sourcefrom=1/=yesterday/page_len60/",
+      "http://irr.ru/real-estate/commercial-sale/search/currency=RUR/sourcefrdate_createom=0/date_create=yesterday/page_len60/",
+      "http://irr.ru/real-estate/commercial-sale/search/currency=RUR/sourcefrom=1/date_create=yesterday/page_len60/"
+    ],
+    "link_extractors": {
+      "follow_link": [
+        "/page\\d/$"
+      ],
+      "parse_link": [
+        "/real-estate/.+/.+advert\\d+\\.html$"
+      ]
+    },
+    "item": {
+      "title": {
+        "extractor": "<h1>(.*?)</h1>"
+      },
+      "id": {
+        "extractor": "advertId\\s+=\\s+(\\d+);"
+      }
+    }
+  }
+}
