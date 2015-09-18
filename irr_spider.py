@@ -20,6 +20,7 @@ class IrrSpider(CrawlSpider):
 
         self.follow_link = kwargs['config']['link_extractors']['follow_link']
         self.parse_link = kwargs['config']['link_extractors']['parse_link']
+        self.config_id = kwargs['id']
 
     def parse(self, response):
         for url in response.css(self.advert_selector).extract():
@@ -37,4 +38,5 @@ class IrrSpider(CrawlSpider):
         item = IrrItem()
         item['id'] = id
         item['title'] = title
+        item['config_id'] = self.config_id
         return item

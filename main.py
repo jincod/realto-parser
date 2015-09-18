@@ -1,4 +1,5 @@
 import json
+import uuid
 from scrapy import signals
 from scrapy.crawler import CrawlerProcess
 from scrapy.settings import Settings
@@ -16,6 +17,7 @@ dispatcher.connect(item_passed, signals.item_passed)
 
 json_data = open('irr_config.json').read()
 config = json.loads(json_data)
+config['id'] = str(uuid.uuid4())
 
 process.crawl(IrrSpider, **config)
 process.start()
