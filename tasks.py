@@ -1,5 +1,3 @@
-import json
-import uuid
 from celery import Celery
 from crawler_worker import CrawlerWorker
 
@@ -14,12 +12,6 @@ celery.conf.update(
 )
 
 @celery.task
-def process_new_config():
-    json_data = open('irr_config.json').read()
-    config = json.loads(json_data)
-    config['id'] = str(uuid.uuid4())
-
+def process_new_config(config):
     wokrer = CrawlerWorker()
     items = wokrer.run(config)
-
-    print len(items)
