@@ -24,7 +24,7 @@
     },
     "item": {
       "title": {
-        "extractor": "<h1>(.*?)</h1>"
+        "extractor": "h1.productName"
       },
       "id": {
         "extractor": "advertId\\s+=\\s+(\\d+);"

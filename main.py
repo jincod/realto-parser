@@ -6,7 +6,13 @@ from scrapy.settings import Settings
 from scrapy.xlib.pydispatch import dispatcher
 from irr_spider import IrrSpider
 
-process = CrawlerProcess(Settings({'ITEM_PIPELINES': {'pipelines.JsonWriterPipeline'}}))
+process = CrawlerProcess(Settings({
+	'ITEM_PIPELINES': {
+		'pipelines.MongoDBPipeline': 1
+	},
+	'MONGO_URI': 'mongodb://localhost:27017/',
+	'MONGO_DATABASE': 'realto'
+}))
 
 items = []
 
