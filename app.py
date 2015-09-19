@@ -1,9 +1,9 @@
+import json
 from pymongo import MongoClient
 from bson.objectid import ObjectId
 from bson.json_util import dumps
 from flask import Flask, redirect, render_template, url_for, request
 import tasks
-import json
 
 app = Flask(__name__)
 client = MongoClient('mongodb://localhost:27017/realto')
@@ -24,16 +24,18 @@ def execute(config_id):
 	config['_id'] = config_id;
 	# clear items
 	items.remove({'config_id': config_id}, multi=True)
-	tasks.process_new_config.delay(config)
+	x = tasks.process_new_config.delay(config)
+	return redirect(url_for('config',
+		config_id = config_id, task_id = x.task_id))
 
-	return redirect(url_for('config', config_id = config_id))
-
-@app.route('/config/<config_id>')
-def config(config_id):
+@app.route('/config/<config_id>/<task_id>')
+def config(config_id, task_id):
 	config = configurations.find_one({'_id': ObjectId(config_id)})
+	state = tasks.process_new_config.AsyncResult(task_id).state
 	return render_template('config.html',
 		items = items.find({'config_id': config_id}),
-		configuration = dumps(config))
+		configuration = dumps(config),
+		state = state)
 
 @app.route('/add-json', methods=['POST'])
 def add_configuration_json():

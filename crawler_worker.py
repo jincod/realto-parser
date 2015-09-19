@@ -24,4 +24,5 @@ class CrawlerWorker():
     def run(self, config):
         self.process.crawl(IrrSpider, **config)
         self.process.start()
+        self.process.stop()
         return self.items
