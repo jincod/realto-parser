@@ -1,7 +1,5 @@
-import json
 import pymongo
 
-from scrapy.exceptions import DropItem
 
 class MongoDBPipeline(object):
 
@@ -17,7 +15,7 @@ class MongoDBPipeline(object):
             mongo_uri=crawler.settings.get('MONGO_URI'),
             mongo_db=crawler.settings.get('MONGO_DATABASE')
         )
-    
+
     def open_spider(self, spider):
         self.client = pymongo.MongoClient(self.mongo_uri)
         self.db = self.client[self.mongo_db]
@@ -26,5 +24,6 @@ class MongoDBPipeline(object):
         self.client.close()
 
     def process_item(self, item, spider):
-        self.db[self.collection_name].update({'id': item['id']}, dict(item), upsert=True)
+        self.db[self.collection_name].update({'id': item['id']},
+                                             dict(item), upsert=True)
         return item

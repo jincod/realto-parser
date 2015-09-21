@@ -5,6 +5,7 @@ from scrapy.xlib.pydispatch import dispatcher
 from irr_spider import IrrSpider
 import pipelines
 
+
 class CrawlerWorker():
     def __init__(self):
         self.process = CrawlerProcess(Settings({
